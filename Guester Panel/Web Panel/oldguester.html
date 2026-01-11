@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guester - Hotel Intelligence Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+:root{--primary-blue:#0f172a;--accent-blue:#3b82f6;--light-blue:#eff6ff;--dark-blue:#1e3a8a;--bg-white:#fff;--bg-gray:#f8fafc;--text-dark:#0f172a;--text-gray:#64748b;--border-light:#e2e8f0;--success:#10b981;--danger:#ef4444;--shadow-sm:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);--shadow-md:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);--shadow-xl:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04)}*{margin:0;padding:0;box-sizing:border-box}body{font-family:Inter,sans-serif;background:linear-gradient(135deg,#f8fafc 0,#e0e7ff 100%);color:var(--text-dark);line-height:1.6;min-height:100vh}.container{max-width:1400px;margin:0 auto;padding:2rem}header{background:linear-gradient(135deg,var(--primary-blue) 0,var(--dark-blue) 100%);padding:2.5rem 0;box-shadow:var(--shadow-xl);margin-bottom:3rem}.header-content{max-width:1400px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;align-items:center}.logo-section{display:flex;align-items:center;gap:1rem}.logo-icon{width:50px;height:50px;background:linear-gradient(135deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:#fff;box-shadow:var(--shadow-lg)}.logo-text h1{font-family:Poppins,sans-serif;font-size:2rem;font-weight:700;color:#fff;letter-spacing:-.02em}.logo-text p{font-size:.875rem;color:rgba(255,255,255,.8);font-weight:400}.tabs-nav{display:flex;gap:.5rem;background:#fff;padding:.5rem;border-radius:12px;box-shadow:var(--shadow-md);margin-bottom:2.5rem}.tab-btn{flex:1;padding:1rem 2rem;background:0 0;border:none;color:var(--text-gray);font-family:Inter,sans-serif;font-size:.95rem;font-weight:600;border-radius:8px;cursor:pointer;transition:all .3s ease}.tab-btn:hover{background:var(--light-blue);color:var(--accent-blue)}.tab-btn.active{background:linear-gradient(135deg,var(--accent-blue) 0,#60a5fa 100%);color:#fff;box-shadow:var(--shadow-md)}.tab-content{display:none;animation:fadeIn .5s ease}.tab-content.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.page-header{text-align:center;margin-bottom:2.5rem}.page-title{font-family:Poppins,sans-serif;font-size:2.5rem;font-weight:700;color:var(--primary-blue);margin-bottom:.5rem}.page-subtitle{color:var(--text-gray);font-size:1.125rem}.filter-section{background:#fff;padding:2rem;border-radius:16px;box-shadow:var(--shadow-md);margin-bottom:2.5rem;border:1px solid var(--border-light)}.filter-header{font-family:Poppins,sans-serif;font-size:1.25rem;font-weight:600;color:var(--primary-blue);margin-bottom:1.5rem}.filter-controls{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}.filter-label{font-weight:600;color:var(--text-dark);font-size:.95rem}.platform-select{flex:1;min-width:250px;padding:.875rem 1.25rem;background:var(--bg-gray);border:2px solid var(--border-light);border-radius:10px;font-family:Inter,sans-serif;font-size:1rem;font-weight:500;color:var(--text-dark);cursor:pointer;transition:all .3s ease}.show-btn{padding:.875rem 2.5rem;background:linear-gradient(135deg,var(--accent-blue) 0,#60a5fa 100%);color:#fff;border:none;border-radius:10px;font-family:Inter,sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:var(--shadow-md)}.show-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2.5rem}.stat-card{background:#fff;padding:2rem;border-radius:16px;box-shadow:var(--shadow-md);border:1px solid var(--border-light);transition:all .3s ease}.stat-label{font-size:.875rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-gray);margin-bottom:.75rem}.stat-value{font-family:Poppins,sans-serif;font-size:2.5rem;font-weight:700;color:var(--primary-blue);margin-bottom:.5rem}.stat-change{font-size:.875rem;font-weight:600}.stat-change.positive{color:var(--success)}.stat-change.negative{color:var(--danger)}.reviews-container{display:grid;gap:1.5rem}.review-card{background:#fff;padding:2rem;border-radius:16px;box-shadow:var(--shadow-md);border-left:4px solid transparent;transition:all .3s ease;border:1px solid var(--border-light)}.review-card.positive{border-left-color:var(--success)}.review-card.negative{border-left-color:var(--danger)}.review-card:hover{transform:translateX(4px);box-shadow:var(--shadow-lg)}.review-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:1.25rem}.reviewer-info{display:flex;align-items:center;gap:1rem}.avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-blue) 0,#60a5fa 100%);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1rem}.reviewer-details h4{font-weight:600;color:var(--text-dark);margin-bottom:.25rem;font-size:1rem}.platform-badge{padding:.25rem .75rem;background:var(--light-blue);color:var(--accent-blue);border-radius:6px;font-size:.75rem;font-weight:600}.classification-badge{padding:.5rem 1rem;border-radius:8px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}.classification-positive{background:rgba(16,185,129,.1);color:var(--success);border:1px solid rgba(16,185,129,.2)}.classification-negative{background:rgba(239,68,68,.1);color:var(--danger);border:1px solid rgba(239,68,68,.2)}.review-text{color:var(--text-gray);line-height:1.8;margin-bottom:1.25rem}.review-footer{display:flex;gap:1.5rem;padding-top:1rem;border-top:1px solid var(--border-light);font-size:.875rem;color:var(--text-gray)}.chart-section{background:#fff;padding:2.5rem;border-radius:16px;box-shadow:var(--shadow-md);margin-top:2.5rem;border:1px solid var(--border-light)}.chart-header{text-align:center;margin-bottom:2rem}.chart-title{font-family:Poppins,sans-serif;font-size:1.75rem;font-weight:700;color:var(--primary-blue);margin-bottom:.5rem}.chart-subtitle{color:var(--text-gray);font-size:1rem}.chart-container{max-width:500px;margin:0 auto}
+.choice-input{display:none}
+.choice-input:checked + .choice-label{background:linear-gradient(135deg,var(--accent-blue) 0,#60a5fa 100%)!important;color:#fff!important;border-color:var(--accent-blue)!important}
+.choice-label:hover{border-color:var(--accent-blue);background:#fff;transform:translateY(-2px);box-shadow:var(--shadow-md)}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.pagination-btn {
+    transition: all 0.2s ease;
+}
+.pagination-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">G</div>
+                <div class="logo-text">
+                    <h1>Guester</h1>
+                    <p>Hotel Intelligence Platform</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('reviews')">Guest Reviews</button>
+            <button class="tab-btn" onclick="switchTab('benchmark')">Competitive Benchmark</button>
+            <button class="tab-btn" onclick="switchTab('score')">Guester Score</button>
+        </nav>
+
+        <!-- Reviews Tab -->
+        <div id="reviews" class="tab-content active">
+            <div class="page-header">
+                <h2 class="page-title">Guest Reviews</h2>
+                <p class="page-subtitle">Comprehensive feedback analysis across all platforms</p>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-header">Filter Reviews by Platform</h3>
+                <div class="filter-controls">
+                    <label class="filter-label" for="platformSelect">Select Platform:</label>
+                    <select id="platformSelect" class="platform-select" onchange="applyFilter()">
+                        <option value="all">All Platforms</option>
+                        <option value="Booking.com">Booking.com</option>
+                    </select>
+                    <button class="show-btn" onclick="applyFilter()">Show Results</button>
+                    <button class="show-btn" onclick="refreshReviews()" id="refreshBtn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">🔄 Refresh Reviews</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">Total Reviews</div><div class="stat-value" id="totalReviews">0</div><div class="stat-change positive">All Feedback</div></div>
+                <div class="stat-card"><div class="stat-label">Positive Feedback</div><div class="stat-value" id="positiveCount">0</div><div class="stat-change positive" id="positivePercent">0%</div></div>
+                <div class="stat-card"><div class="stat-label">Negative Feedback</div><div class="stat-value" id="negativeCount">0</div><div class="stat-change negative" id="negativePercent">0%</div></div>
+                <div class="stat-card"><div class="stat-label">Guest Sentiment</div><div class="stat-value" id="sentimentScore">0%</div><div class="stat-change positive">Overall Positive</div></div>
+            </div>
+
+            <div id="reviewsContainer" class="reviews-container"></div>
+
+            <div class="chart-section">
+                <div class="chart-header">
+                    <h3 class="chart-title">Sentiment Distribution</h3>
+                    <p class="chart-subtitle">Visual breakdown of positive and negative feedback</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benchmark Tab -->
+        <div id="benchmark" class="tab-content">
+            <div class="page-header">
+                <h2 class="page-title">Competitive Benchmark</h2>
+                <p class="page-subtitle">Market position analysis and performance comparison</p>
+            </div>
+
+            <div class="choice-section" style="background:#fff;padding:2rem;border-radius:16px;box-shadow:var(--shadow-md);margin-bottom:2rem;border:1px solid var(--border-light);">
+                <div class="choice-container" style="display:flex;gap:1rem;justify-content:center;align-items:center;">
+                    <div class="choice-option" style="flex:1;max-width:300px;">
+                        <input type="radio" id="locationBased" name="comparisonType" class="choice-input" value="location" checked onchange="toggleSearchSection()">
+                        <label for="locationBased" class="choice-label" style="display:block;padding:1.25rem 2rem;background:var(--bg-gray);border:2px solid var(--border-light);border-radius:12px;font-family:Inter,sans-serif;font-size:1rem;font-weight:600;color:var(--text-dark);text-align:center;cursor:pointer;transition:all .3s ease;text-transform:uppercase;letter-spacing:.05em;">📍 Location Based</label>
+                    </div>
+                    <div class="choice-option" style="flex:1;max-width:300px;">
+                        <input type="radio" id="specificHotel" name="comparisonType" class="choice-input" value="specific" onchange="toggleSearchSection()">
+                        <label for="specificHotel" class="choice-label" style="display:block;padding:1.25rem 2rem;background:var(--bg-gray);border:2px solid var(--border-light);border-radius:12px;font-family:Inter,sans-serif;font-size:1rem;font-weight:600;color:var(--text-dark);text-align:center;cursor:pointer;transition:all .3s ease;text-transform:uppercase;letter-spacing:.05em;">🏨 Specific Hotel</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-section" id="hotelSearchSection" style="background:#fff;padding:2rem;border-radius:16px;box-shadow:var(--shadow-md);margin-bottom:2.5rem;border:1px solid var(--border-light);display:none;">
+                <div class="search-container" style="display:flex;gap:1rem;align-items:center;flex-direction:column;">
+                    <input type="text" id="hotelSearch" class="search-input" placeholder="Start typing hotel name..." oninput="searchHotelsLive()" style="width:100%;padding:1rem 1.5rem;background:var(--bg-gray);border:2px solid var(--border-light);border-radius:12px;font-family:Inter,sans-serif;font-size:1rem;">
+                    
+                    <!-- Selected Hotels Display -->
+                    <div id="selectedHotelsDisplay" style="width:100%;display:none;background:var(--light-blue);padding:1rem;border-radius:10px;border:2px solid var(--accent-blue);">
+                        <div style="font-weight:600;color:var(--accent-blue);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;">
+                            <span>✓ Selected Hotels (<span id="selectedCount">0</span>)</span>
+                            <button onclick="clearAllSelections()" style="background:transparent;border:none;color:var(--danger);cursor:pointer;font-weight:600;font-size:0.9rem;">Clear All</button>
+                        </div>
+                        <div id="selectedHotelsList" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+                    </div>
+                </div>
+                
+                <div class="results-dropdown" id="resultsDropdown" style="margin-top:1.5rem;display:none;">
+                    <div class="results-header" style="font-weight:600;color:var(--text-dark);margin-bottom:1rem;">🔍 Hotels found - Click to select:</div>
+                    <div class="hotel-options" id="hotelOptions" style="display:flex;flex-direction:column;gap:.75rem;max-height:400px;overflow-y:auto;"></div>
+                </div>
+                
+                <div id="buttonContainer" style="display:none;margin-top:1.5rem;">
+                    <button class="confirm-btn" id="confirmBtn" onclick="confirmSelection()" style="width:100%;padding:1rem 3rem;background:linear-gradient(135deg,var(--success) 0,#059669 100%);color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-size:1.1rem;">SEND <span id="confirmCount">0</span> HOTELS TO SYSTEM</button>
+                </div>
+            </div>
+
+            <div class="benchmark-table" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-md);border:1px solid var(--border-light);">
+                <div class="benchmark-header" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;background:linear-gradient(135deg,var(--primary-blue) 0,var(--dark-blue) 100%);color:#fff;font-size:.875rem;font-weight:700;text-transform:uppercase;">
+                    <div>Hotel</div><div style="text-align:center">Rating</div><div style="text-align:center">Reviews</div><div style="text-align:center">Avg. Rate</div>
+                </div>
+                <div class="benchmark-row featured" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid var(--border-light);background:var(--light-blue);border-left:4px solid var(--accent-blue);">
+                    <div class="hotel-info"><h4 style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">Lamartine Hotel (Guester Powered)</h4><p class="hotel-type" style="font-size:.875rem;color:var(--text-gray);">Boutique Luxury • Istanbul</p></div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">4.7 ★</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">1,247</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">€189</div>
+                </div>
+                <div class="benchmark-row" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid var(--border-light);">
+                    <div class="hotel-info"><h4 style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">Pera Palace Hotel</h4><p class="hotel-type" style="font-size:.875rem;color:var(--text-gray);">Historic Luxury • 5-Star</p></div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">4.5 ★</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">2,103</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">€279</div>
+                </div>
+                <div class="benchmark-row" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid var(--border-light);">
+                    <div class="hotel-info"><h4 style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">Taksim Suites</h4><p class="hotel-type" style="font-size:.875rem;color:var(--text-gray);">Business Hotel • 4-Star</p></div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">4.3 ★</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">876</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">€165</div>
+                </div>
+                <div class="benchmark-row" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;border-bottom:1px solid var(--border-light);">
+                    <div class="hotel-info"><h4 style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">Vault Karakoy</h4><p class="hotel-type" style="font-size:.875rem;color:var(--text-gray);">Boutique Hotel • 5-Star</p></div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">4.6 ★</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">543</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">€245</div>
+                </div>
+                <div class="benchmark-row" style="display:grid;grid-template-columns:2fr repeat(3,1fr);gap:2rem;padding:1.5rem 2rem;">
+                    <div class="hotel-info"><h4 style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">Mövenpick Istanbul</h4><p class="hotel-type" style="font-size:.875rem;color:var(--text-gray);">Chain Hotel • 5-Star</p></div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">4.4 ★</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">1,567</div>
+                    <div class="metric-cell" style="text-align:center;font-weight:600;">€199</div>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-top:2.5rem">
+                <div class="stat-card"><div class="stat-label">Market Position</div><div class="stat-value">#1</div><div class="stat-change positive">Taksim Area</div></div>
+                <div class="stat-card"><div class="stat-label">Rating Advantage</div><div class="stat-value">+0.2</div><div class="stat-change positive">Above Average</div></div>
+                <div class="stat-card"><div class="stat-label">Price Position</div><div class="stat-value">Mid-Tier</div><div class="stat-change positive">Best Value</div></div>
+                <div class="stat-card"><div class="stat-label">Occupancy Rate</div><div class="stat-value">87%</div><div class="stat-change positive">High Demand</div></div>
+            </div>
+        </div>
+
+        <!-- Score Tab -->
+        <div id="score" class="tab-content">
+            <div class="page-header">
+                <h2 class="page-title">Guester Score</h2>
+                <p class="page-subtitle">Comprehensive performance intelligence index</p>
+            </div>
+
+            <div class="score-showcase" style="background:linear-gradient(135deg,var(--primary-blue) 0,var(--dark-blue) 100%);padding:3rem;border-radius:16px;text-align:center;box-shadow:var(--shadow-xl);margin-bottom:2.5rem;">
+                <div class="score-label" style="font-size:.875rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.8);margin-bottom:1rem;font-weight:600;">Overall Performance Index</div>
+                <div class="score-number" style="font-family:Poppins,sans-serif;font-size:6rem;font-weight:700;color:#fff;line-height:1;margin-bottom:.5rem;">89<span class="score-suffix" style="font-size:2.5rem;opacity:.7;">/100</span></div>
+                <div class="score-description" style="font-size:1.25rem;color:rgba(255,255,255,.9);">Exceptional Excellence</div>
+            </div>
+
+            <div class="breakdown-grid" style="display:grid;gap:1.25rem;">
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Guest Satisfaction</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">94/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:94%;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Service Excellence</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">91/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:91%;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Operational Efficiency</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">88/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:88%;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Revenue Performance</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">85/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:85%;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Digital Presence</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">87/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:87%;"></div>
+                    </div>
+                </div>
+                <div class="breakdown-item" style="background:#fff;padding:1.75rem;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light);">
+                    <div class="breakdown-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+                        <span class="breakdown-label" style="font-weight:600;color:var(--text-dark);">Market Competitiveness</span>
+                        <span class="breakdown-value" style="font-family:Poppins,sans-serif;font-size:1.5rem;font-weight:700;color:var(--accent-blue);">92/100</span>
+                    </div>
+                    <div class="breakdown-bar" style="height:8px;background:var(--bg-gray);border-radius:4px;overflow:hidden;">
+                        <div class="breakdown-progress" style="height:100%;background:linear-gradient(90deg,var(--accent-blue) 0,#60a5fa 100%);border-radius:4px;width:92%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid" style="margin-top:2.5rem">
+                <div class="stat-card"><div class="stat-label">Industry Ranking</div><div class="stat-value">Top 6%</div><div class="stat-change positive">National</div></div>
+                <div class="stat-card"><div class="stat-label">Score Trend</div><div class="stat-value">+7</div><div class="stat-change positive">Quarterly Growth</div></div>
+                <div class="stat-card"><div class="stat-label">Improvement Rate</div><div class="stat-value">+15%</div><div class="stat-change positive">Year-over-Year</div></div>
+                <div class="stat-card"><div class="stat-label">Consistency</div><div class="stat-value">97%</div><div class="stat-change positive">Stable Performance</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Popup -->
+    <div id="loadingPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:3rem; border-radius:20px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div style="width:60px; height:60px; border:4px solid #e2e8f0; border-top-color:#3b82f6; border-radius:50%; margin:0 auto 1.5rem; animation:spin 1s linear infinite;"></div>
+            <h3 style="font-size:1.5rem; font-weight:700; color:#0f172a; margin-bottom:0.5rem;">Fetching Reviews...</h3>
+            <p style="color:#64748b; font-size:1rem;">This may take a few minutes</p>
+        </div>
+    </div>
+
+    <script>
+// Global variables
+let allReviews = [];
+let myChart = null;
+let currentPage = 1;
+let reviewsPerPage = 15;
+let currentFilteredReviews = [];
+
+// Load reviews when page loads
+async function loadReviews() {
+    try {
+        console.log('Loading reviews...');
+        const response = await fetch('http://localhost:5001/api/load-reviews');
+        const data = await response.json();
+        
+        if (data.success) {
+            allReviews = data.data;
+            currentFilteredReviews = allReviews;
+            currentPage = 1;
+            displayReviews(currentFilteredReviews);
+            updateStats(currentFilteredReviews);
+            createChart(currentFilteredReviews);
+            console.log('✅ Loaded ' + allReviews.length + ' reviews');
+        } else {
+            console.error('Failed to load reviews:', data.message);
+            alert('Failed to load reviews: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+        alert('Error: Make sure app.py is running on http://localhost:5001');
+    }
+}
+
+// Refresh reviews by running scraper
+async function refreshReviews() {
+    const loadingPopup = document.getElementById('loadingPopup');
+    const refreshBtn = document.getElementById('refreshBtn');
+    
+    loadingPopup.style.display = 'flex';
+    refreshBtn.disabled = true;
+    
+    try {
+        console.log('Starting refresh...');
+        const response = await fetch('http://localhost:5001/api/refresh-reviews', {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        loadingPopup.style.display = 'none';
+        refreshBtn.disabled = false;
+        
+        if (data.success) {
+            allReviews = data.data;
+            currentFilteredReviews = allReviews;
+            currentPage = 1;
+            displayReviews(currentFilteredReviews);
+            updateStats(currentFilteredReviews);
+            createChart(currentFilteredReviews);
+            alert('✅ ' + data.message);
+            console.log('✅ Refreshed! ' + allReviews.length + ' reviews loaded');
+        } else {
+            alert('❌ Failed to refresh: ' + data.message);
+        }
+    } catch (error) {
+        loadingPopup.style.display = 'none';
+        refreshBtn.disabled = false;
+        console.error('Error refreshing:', error);
+        alert('Error refreshing reviews. Check console for details.');
+    }
+}
+
+// Apply filter
+function applyFilter() {
+    const platform = document.getElementById('platformSelect').value;
+    let filtered = allReviews;
+    
+    if (platform !== 'all') {
+        filtered = allReviews.filter(function(r) {
+            return r.platform === platform;
+        });
+    }
+    
+    currentFilteredReviews = filtered;
+    currentPage = 1;
+    displayReviews(currentFilteredReviews);
+    updateStats(currentFilteredReviews);
+    updateChart(currentFilteredReviews);
+}
+
+// Display reviews dynamically with pagination
+function displayReviews(reviews) {
+    const container = document.getElementById('reviewsContainer');
+    container.innerHTML = '';
+    
+    if (reviews.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-gray)">No reviews found.</div>';
+        return;
+    }
+    
+    // Calculate pagination
+    const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+    const startIndex = (currentPage - 1) * reviewsPerPage;
+    const endIndex = Math.min(startIndex + reviewsPerPage, reviews.length);
+    const currentReviews = reviews.slice(startIndex, endIndex);
+    
+    // Display reviews for current page
+    for (let i = 0; i < currentReviews.length; i++) {
+        const review = currentReviews[i];
+        const classification = review.Classification.toLowerCase();
+        const cardClass = classification === 'positive' ? 'positive' : 'negative';
+        const badgeClass = classification === 'positive' ? 'classification-positive' : 'classification-negative';
+        const avatar = 'B' + (startIndex + i + 1);
+        
+        const card = '<div class="review-card ' + cardClass + '">' +
+            '<div class="review-header">' +
+                '<div class="reviewer-info">' +
+                    '<div class="avatar">' + avatar + '</div>' +
+                    '<div class="reviewer-details">' +
+                        '<h4>' + (review.Author || 'Unknown Author') + '</h4>' +
+                        '<span class="platform-badge">' + (review.platform || 'Booking.com') + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<span class="classification-badge ' + badgeClass + '">' + classification + '</span>' +
+            '</div>' +
+            '<p class="review-text">"' + review.Quote_Text + '"</p>' +
+            '<div class="review-footer">' +
+                '<span>📅 ' + (review.Date || 'N/A') + '</span>' +
+                '<span>🆔 ' + review.Review_ID + '</span>' +
+            '</div>' +
+        '</div>';
+        
+        container.innerHTML += card;
+    }
+    
+    // Add pagination controls
+    createPaginationControls(totalPages, reviews.length, startIndex, endIndex);
+}
+
+// Create pagination controls
+function createPaginationControls(totalPages, totalReviews, startIndex, endIndex) {
+    const container = document.getElementById('reviewsContainer');
+    
+    if (totalPages <= 1) return; // No pagination needed
+    
+    let paginationHTML = '<div style="margin-top:2rem; display:flex; justify-content:space-between; align-items:center; background:#fff; padding:1.5rem; border-radius:12px; box-shadow:var(--shadow-md);">';
+    
+    // Page info
+    paginationHTML += '<div style="color:var(--text-gray); font-weight:600;">Showing ' + (startIndex + 1) + '-' + endIndex + ' of ' + totalReviews + ' reviews</div>';
+    
+    // Page buttons
+    paginationHTML += '<div style="display:flex; gap:0.5rem; align-items:center;">';
+    
+    // Previous button
+    if (currentPage > 1) {
+        paginationHTML += '<button onclick="goToPage(' + (currentPage - 1) + ')" style="padding:0.5rem 1rem; background:var(--accent-blue); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600;">← Previous</button>';
+    }
+    
+    // Page numbers
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    if (startPage > 1) {
+        paginationHTML += '<button onclick="goToPage(1)" style="padding:0.5rem 0.75rem; background:var(--bg-gray); border:2px solid var(--border-light); border-radius:8px; cursor:pointer; font-weight:600;">1</button>';
+        if (startPage > 2) {
+            paginationHTML += '<span style="padding:0.5rem;">...</span>';
+        }
+    }
+    
+    for (let page = startPage; page <= endPage; page++) {
+        if (page === currentPage) {
+            paginationHTML += '<button style="padding:0.5rem 0.75rem; background:var(--accent-blue); color:#fff; border:none; border-radius:8px; font-weight:600;">' + page + '</button>';
+        } else {
+            paginationHTML += '<button onclick="goToPage(' + page + ')" style="padding:0.5rem 0.75rem; background:var(--bg-gray); border:2px solid var(--border-light); border-radius:8px; cursor:pointer; font-weight:600;">' + page + '</button>';
+        }
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            paginationHTML += '<span style="padding:0.5rem;">...</span>';
+        }
+        paginationHTML += '<button onclick="goToPage(' + totalPages + ')" style="padding:0.5rem 0.75rem; background:var(--bg-gray); border:2px solid var(--border-light); border-radius:8px; cursor:pointer; font-weight:600;">' + totalPages + '</button>';
+    }
+    
+    // Next button
+    if (currentPage < totalPages) {
+        paginationHTML += '<button onclick="goToPage(' + (currentPage + 1) + ')" style="padding:0.5rem 1rem; background:var(--accent-blue); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600;">Next →</button>';
+    }
+    
+    paginationHTML += '</div></div>';
+    
+    container.innerHTML += paginationHTML;
+}
+
+// Go to specific page
+function goToPage(page) {
+    currentPage = page;
+    displayReviews(currentFilteredReviews);
+    // Scroll to top of reviews
+    document.getElementById('reviewsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Update statistics
+function updateStats(reviews) {
+    const total = reviews.length;
+    let positive = 0;
+    let negative = 0;
+    
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].Classification.toLowerCase() === 'positive') {
+            positive++;
+        } else {
+            negative++;
+        }
+    }
+    
+    const positivePercent = total > 0 ? ((positive / total) * 100).toFixed(1) : '0.0';
+    const negativePercent = total > 0 ? ((negative / total) * 100).toFixed(1) : '0.0';
+    
+    document.getElementById('totalReviews').textContent = total;
+    document.getElementById('positiveCount').textContent = positive;
+    document.getElementById('negativeCount').textContent = negative;
+    document.getElementById('positivePercent').textContent = positivePercent + '%';
+    document.getElementById('negativePercent').textContent = negativePercent + '%';
+    document.getElementById('sentimentScore').textContent = positivePercent + '%';
+}
+
+// Create chart
+function createChart(reviews) {
+    const ctx = document.getElementById('sentimentChart').getContext('2d');
+    let positive = 0;
+    let negative = 0;
+    
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].Classification.toLowerCase() === 'positive') {
+            positive++;
+        } else {
+            negative++;
+        }
+    }
+    
+    if (myChart) {
+        myChart.destroy();
+    }
+    
+    myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Positive Feedback', 'Negative Feedback'],
+            datasets: [{
+                data: [positive, negative],
+                backgroundColor: ['rgba(16,185,129,0.8)', 'rgba(239,68,68,0.8)'],
+                borderColor: ['#10b981', '#ef4444'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#0f172a',
+                        font: { size: 14, family: 'Inter', weight: 600 },
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Update chart
+function updateChart(reviews) {
+    createChart(reviews);
+}
+
+// Tab switching
+function switchTab(tabName) {
+    const contents = document.querySelectorAll('.tab-content');
+    const buttons = document.querySelectorAll('.tab-btn');
+    
+    for (let i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+    }
+    
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+    }
+    
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// Benchmark functions
+let selectedHotels = [];
+let searchTimeout = null;
+
+function toggleSearchSection() {
+    const specificHotelRadio = document.getElementById('specificHotel');
+    const searchSection = document.getElementById('hotelSearchSection');
+    if (specificHotelRadio && searchSection) {
+        if (specificHotelRadio.checked) {
+            searchSection.style.display = 'block';
+        } else {
+            searchSection.style.display = 'none';
+        }
+    }
+}
+
+// Auto-search as user types (with debouncing)
+function searchHotelsLive() {
+    const searchInput = document.getElementById('hotelSearch');
+    if (!searchInput) return;
+    
+    const query = searchInput.value.trim();
+    
+    // Clear previous timeout
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+    
+    // Hide results if query is too short
+    if (query.length < 2) {
+        document.getElementById('resultsDropdown').style.display = 'none';
+        return;
+    }
+    
+    // Debounce: wait 500ms after user stops typing
+    searchTimeout = setTimeout(function() {
+        searchHotels(query);
+    }, 500);
+}
+
+async function searchHotels(query) {
+    try {
+        const response = await fetch('http://localhost:5001/api/search-hotels', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query })
+        });
+        const data = await response.json();
+        if (data.success) {
+            displayResults(data.results);
+        }
+    } catch (error) {
+        console.error('Error searching hotels:', error);
+    }
+}
+
+function displayResults(results) {
+    const optionsContainer = document.getElementById('hotelOptions');
+    const resultsDropdown = document.getElementById('resultsDropdown');
+    
+    if (!optionsContainer || !resultsDropdown) return;
+    
+    optionsContainer.innerHTML = '';
+    
+    if (results.length === 0) {
+        resultsDropdown.style.display = 'none';
+        return;
+    }
+    
+    for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        const isSelected = selectedHotels.some(function(h) { return h.name === result.name; });
+        
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'hotel-option';
+        optionDiv.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:var(--bg-gray);border:2px solid var(--border-light);border-radius:12px;cursor:pointer;transition:all .3s ease;';
+        optionDiv.onclick = function() { selectHotel(i, result); };
+        
+        let ratingHTML = '';
+        if (result.rating && result.rating !== 'N/A') {
+            ratingHTML = '<div style="color:var(--accent-blue);font-weight:600;font-size:0.9rem;margin-top:0.25rem;">⭐ ' + result.rating + '</div>';
+        }
+        
+        optionDiv.innerHTML = 
+            '<div class="hotel-info-left" style="flex:1;">' +
+                '<div class="hotel-name" style="font-weight:600;color:var(--text-dark);margin-bottom:.25rem;">' + result.name + '</div>' +
+                '<div class="hotel-location" style="color:var(--text-gray);font-size:.875rem;">📍 ' + result.location + '</div>' +
+                ratingHTML +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:1rem;">' +
+                (result.verified ? '<span style="background:rgba(16,185,129,0.1);color:var(--success);padding:0.25rem 0.75rem;border-radius:6px;font-size:0.75rem;font-weight:600;">✓ Verified</span>' : '') +
+                '<div class="hotel-checkbox" id="checkbox-' + i + '" style="font-size:1.5rem;color:var(--accent-blue);">' + (isSelected ? '☑' : '☐') + '</div>' +
+            '</div>';
+        
+        optionsContainer.appendChild(optionDiv);
+    }
+    
+    resultsDropdown.style.display = 'block';
+}
+
+function selectHotel(index, hotelData) {
+    const checkbox = document.getElementById('checkbox-' + index);
+    if (!checkbox) return;
+    
+    const isSelected = selectedHotels.some(function(h) { return h.name === hotelData.name; });
+    
+    if (isSelected) {
+        selectedHotels = selectedHotels.filter(function(h) { return h.name !== hotelData.name; });
+        checkbox.textContent = '☐';
+    } else {
+        selectedHotels.push(hotelData);
+        checkbox.textContent = '☑';
+    }
+    
+    updateSelectedHotelsDisplay();
+}
+
+function updateSelectedHotelsDisplay() {
+    const displayDiv = document.getElementById('selectedHotelsDisplay');
+    const listDiv = document.getElementById('selectedHotelsList');
+    const countSpan = document.getElementById('selectedCount');
+    const confirmCountSpan = document.getElementById('confirmCount');
+    const buttonContainer = document.getElementById('buttonContainer');
+    
+    if (!displayDiv || !listDiv) return;
+    
+    // Update count
+    countSpan.textContent = selectedHotels.length;
+    confirmCountSpan.textContent = selectedHotels.length;
+    
+    if (selectedHotels.length > 0) {
+        displayDiv.style.display = 'block';
+        buttonContainer.style.display = 'block';
+        
+        // Build selected hotels list
+        listDiv.innerHTML = '';
+        for (let i = 0; i < selectedHotels.length; i++) {
+            const hotel = selectedHotels[i];
+            const hotelItem = document.createElement('div');
+            hotelItem.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.5rem;background:white;border-radius:6px;';
+            hotelItem.innerHTML = 
+                '<div>' +
+                    '<div style="font-weight:600;color:var(--text-dark);font-size:0.9rem;">' + hotel.name + '</div>' +
+                    '<div style="color:var(--text-gray);font-size:0.75rem;">📍 ' + hotel.location + '</div>' +
+                '</div>' +
+                '<button onclick="removeSelectedHotel(\'' + hotel.name.replace(/'/g, "\\'") + '\')" style="background:transparent;border:none;color:var(--danger);cursor:pointer;font-size:1.2rem;padding:0.25rem;">✕</button>';
+            listDiv.appendChild(hotelItem);
+        }
+    } else {
+        displayDiv.style.display = 'none';
+        buttonContainer.style.display = 'none';
+    }
+}
+
+function removeSelectedHotel(hotelName) {
+    selectedHotels = selectedHotels.filter(function(h) { return h.name !== hotelName; });
+    
+    // Update checkboxes in results
+    const checkboxes = document.querySelectorAll('[id^="checkbox-"]');
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].textContent = '☐';
+    }
+    
+    // Re-check selected hotels
+    for (let i = 0; i < selectedHotels.length; i++) {
+        const hotelOption = document.querySelector('.hotel-name');
+        // Find and check the checkbox for this hotel
+        const allOptions = document.querySelectorAll('.hotel-option');
+        for (let j = 0; j < allOptions.length; j++) {
+            const nameEl = allOptions[j].querySelector('.hotel-name');
+            if (nameEl && nameEl.textContent === selectedHotels[i].name) {
+                const cb = document.getElementById('checkbox-' + j);
+                if (cb) cb.textContent = '☑';
+            }
+        }
+    }
+    
+    updateSelectedHotelsDisplay();
+}
+
+function clearAllSelections() {
+    selectedHotels = [];
+    const checkboxes = document.querySelectorAll('[id^="checkbox-"]');
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].textContent = '☐';
+    }
+    updateSelectedHotelsDisplay();
+}
+
+async function confirmSelection() {
+    if (selectedHotels.length === 0) return;
+    
+    const btn = document.getElementById('confirmBtn');
+    if (!btn) return;
+    
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ SENDING...';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch('http://localhost:5001/api/save-hotels', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hotels: selectedHotels })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            btn.innerHTML = '✓ SENT ' + selectedHotels.length + ' HOTELS TO SYSTEM';
+            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            console.log('Hotels sent to backend:', selectedHotels);
+            
+            setTimeout(function() {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 3000);
+        }
+    } catch (error) {
+        console.error('Error sending hotel data:', error);
+        btn.innerHTML = '❌ ERROR - RETRY';
+        setTimeout(function() {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }, 2000);
+    }
+}
+
+// Load reviews when page loads
+window.addEventListener('load', function() {
+    loadReviews();
+});
+    </script>
+</body>
+</html>
